@@ -75,7 +75,7 @@ public class Code06_AOE {
 			cover[i] = r - 1;
 		}
 		
-		SegmentTree segmentTree = new SegmentTree(hp);
+		SegmentTree segmentTree = new SegmentTree(hp);// 注意这里是hp
 		segmentTree.build(1, N, 1);
 		
 		// 卡住左边界，刮死最边缘的怪物
