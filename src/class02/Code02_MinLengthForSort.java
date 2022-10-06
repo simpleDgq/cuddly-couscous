@@ -10,7 +10,7 @@ public class Code02_MinLengthForSort {
 	 * 思路:
 	 * 1）先从左往右遍历,
 	 *		max左: 划过部分的最大值
-	 *		左Max>当前数字: 打叉
+	 *		左Max>当前数字: 打叉， 证明这个位置元素处在一个不正确的位置(因为它前面有个比它大的数)
 	 *		左Max<=当前数字: 打勾
 	 * 记录最右打叉的位置
 	 * 2）然后从右往左遍历,
@@ -22,7 +22,7 @@ public class Code02_MinLengthForSort {
 	 * 两个打叉的位置，表示的范围就是需要排序的数组。
 	 */
 	public static int findUnsortedSubarray(int nums[]) {
-		if(nums == null || nums.length < 2) {
+		if(nums == null || nums.length < 2) { // 数组长度是1，不需要排序
 			return 0;
 		}
 		
@@ -46,7 +46,7 @@ public class Code02_MinLengthForSort {
 			}
 		}
 		
-		return Math.max(0, rightPoint - leftPoint + 1);
+		return Math.max(0, rightPoint - leftPoint + 1); // 本来就有序的数组，rightPoint - leftPoint + 1会得到负数，本来不需要排序，答案是0，所以和0比较，取最大值
 	}
 
 }
