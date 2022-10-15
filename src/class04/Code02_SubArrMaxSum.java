@@ -37,4 +37,22 @@ public class Code02_SubArrMaxSum {
         
         return max;
     }
+    
+    
+    // 可以更加优化，没必要申请数组
+    public int maxSubArray2(int[] nums) {
+        if(nums == null || nums.length == 0) {
+            return 0;
+        }
+        int N = nums.length;
+        int pre = nums[0]; // 必须以0位置结尾的情况下，最大值，只有0位置，不能向左扩
+        int max = nums[0]; // max从第一个元素开始
+        
+        for(int i = 1; i <= N - 1; i++) {
+            pre = Math.max(pre + nums[i], nums[i]);
+            max = Math.max(pre, max);
+        }
+        return max;
+    }
+    
 }
