@@ -1,7 +1,7 @@
 package class05;
 
 public class Code03_EditCost {
-
+    // https://leetcode.cn/problems/edit-distance/
     /*
      * 编辑距离
      * 
@@ -71,18 +71,34 @@ public class Code03_EditCost {
         }
 
         // 普遍位置
-        int ans = Integer.MAX_VALUE;
         for (int i = 1; i <= N; i++) {
             for (int j = 1; j <= M; j++) {
-                ans = Math.min(dp[i - 1][j] + dc, dp[i][j - 1] + ac);
+                int p1 = dp[i - 1][j] + dc;
+                int p2 = dp[i][j - 1] + ac;
+                int p3 = Integer.MAX_VALUE;
+                int p4 = Integer.MAX_VALUE;
                 if(str1[i - 1] != str2[j - 1]) {
-                    ans = Math.min(dp[i - 1][j - 1] + rc, ans);
+                    p3 = dp[i - 1][j - 1] + rc;
                 } else {
-                    ans = Math.min(dp[i - 1][j - 1], ans);
+                    p4 = dp[i - 1][j - 1];
                 }
-                dp[i][j] = ans;
+                dp[i][j] = Math.min(p1, Math.min(p2, Math.min(p3, p4)));
             }
         }
+        
+        /*
+         * 简化写法
+         */
+//        for (int i = 1; i <= N; i++) {
+//            for (int j = 1; j <= M; j++) {
+//                dp[i][j] = Math.min(dp[i - 1][j] + dc, dp[i][j - 1] + ac);
+//                if(str1[i - 1] != str2[j - 1]) {
+//                    dp[i][j] = Math.min(dp[i - 1][j - 1] + rc, dp[i][j]);
+//                } else {
+//                    dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i][j]);
+//                }
+//            }
+//        }
         return dp[N][M];
     }
 
