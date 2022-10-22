@@ -157,8 +157,15 @@ public class Code04_DeleteMinCost {
     }
     
     
-    // 继续优化: O(N^2 * M)
-    // 
+    // 解法二继续优化: O(N^2 * M)
+    // str2 先跟对应str1 空串的时候的表，就是第0列
+    // str2 先跟对应str1 1个字符的时候的表，就是第1列， 第1列可以通过第0列得来
+    // str2 先跟对应str1 2个空串的时候的表，就是第2列，第2列可以通过第0列和第1列得来
+    // ....
+    // Str1的子串总共有N^2个，总共就有N^2列，没一列填M行，所以O(N^2 * M)
+    // 略...课上没讲，代码懒得搞了
+    
+    
     public static String generateRandomString(int l, int v) {
         int len = (int) (Math.random() * l);
         char[] str = new char[len];
