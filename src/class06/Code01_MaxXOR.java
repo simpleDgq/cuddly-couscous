@@ -60,15 +60,16 @@ public class Code01_MaxXOR {
         int N = arr.length;
         int eor[] = new int[N]; // 记录i位置结尾的异或和
         eor[0] = arr[0]; // 0位置的异或和就是自己
-        for(int i = 1; i <= N - 1; i++) {
+        for(int i = 1; i <= N - 1; i++) { // 生成每一个位置的整体前缀异或和数组
             eor[i] = eor[i - 1] ^ arr[i];
         }
         
-        // 求以每一个位置结尾的子数组的异或和，取最大值
+        // 每一个位置的整体前缀异或和和它前面可能的异或和去匹配，求出一个最大的
         int ans = Integer.MIN_VALUE;
         for(int i = 0; i <= N - 1; i++) {
-            for(int j = 0; j <= i; j++) { // j == 0的时候，表示一个也不选，异或和就是eor[i]，表示的是0~i的异或和
-                                            // j == 1的时候, 表示的事0~1的异或和，eor[0]异或上eor[i] 表示的就是1~i的异或和
+            for(int j = 0; j <= i; j++) { // j == 0的时候，表示前面的一个也不选，异或和就是eor[i]，表示的是0~i的异或和
+                                            // j == 1的时候, 表示的是0~1的异或和，eor[0]异或上eor[i] 表示的就是1~i的异或和
+                                            // ...
                                            // 取最大值
                 ans = Math.max(ans,  j == 0 ? eor[i] : eor[i] ^ eor[j - 1]);
             }
@@ -122,7 +123,7 @@ public class Code01_MaxXOR {
             return ans;
         }
     }
-    
+    // 利用前缀树，将前面可能的前缀异或和放到树上，每次只需要去找一条最优的路径
     public static int maxXorSubAarry1(int arr[]) {
         if(arr == null || arr.length == 0) {
             return 0;
