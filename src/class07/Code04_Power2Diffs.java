@@ -7,7 +7,7 @@ public class Code04_Power2Diffs {
     /*
      * 1. 给定一个有序数组arr，其中值可能为正、负、0。 返回arr中每个数都平方之后不同的结果有多少种？
      * 
-     * 2. 给定一个数组arr，先递减然后递增，返回arr中有多少个绝对值不同的数字？
+     * 2. 给定一个数组arr，先递减然后递增，返回arr中有多少个绝对值不同的数字？ --> 也是同样的解法
      * 
      * 
      * 两题都是同一个解法
@@ -24,7 +24,7 @@ public class Code04_Power2Diffs {
         return set.size();
     }
     
-    // 首尾双指针
+    // 首尾双指针 时间:O(N) 空间: O(1)
     public static int diff2(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
