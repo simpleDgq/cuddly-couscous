@@ -109,26 +109,6 @@ public class Code05_WorldBreak {
         }
     }
     
-    public static int g(char[] str, Node root, int i) {
-        if (i == str.length) {
-            return 1;
-        }
-        int ways = 0;
-        Node cur = root;
-        // i...end
-        for (int end = i; end < str.length; end++) {
-            int path = str[end] - 'a';
-            if (cur.nexts[path] == null) {
-                break;
-            }
-            cur = cur.nexts[path];
-            if (cur.end) { // i...end
-                ways += g(str, root, end + 1);
-            }
-        }
-        return ways;
-    }
-    
     // 建前缀树
     public static Node constructTrieTree(String arr[]) {
         if(arr == null || arr.length == 0) {
