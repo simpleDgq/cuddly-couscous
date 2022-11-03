@@ -39,7 +39,7 @@ public class Code01_ExpressionCompute {
             if(str[i] >= '0' && str[i] <= '9') { // 遇到的是数字。就收集
                 cur = cur * 10 + (str[i++] - '0');
             } else if(str[i] != '(') { // 遇到的是运算符
-                // 将当前值加入到队列中，同时会处理*和/
+                // 将当前值加入到队列中，如果栈顶是*和/，就计算
                 addNum(que, cur);
                 // 将当前遇到的运算符放入队列中
                 que.addLast(String.valueOf(str[i++]));
