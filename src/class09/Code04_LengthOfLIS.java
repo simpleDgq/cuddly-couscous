@@ -2,7 +2,7 @@ package class09;
 
 //本题测试链接 : https://leetcode.com/problems/longest-increasing-subsequence
 public class Code04_LengthOfLIS {
-    /*
+    /* 最长递增子序列的长度
      *  给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
         子序列是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
         
@@ -49,7 +49,10 @@ public class Code04_LengthOfLIS {
      *  申请辅助数组ends, ends[i]: 目前所有长度为i+1的递增子序列中的最小结尾.
      *  
      *  来到一个i的时候，做一个二分在ends里有效区寻找 >= 当前数(arr[i])的最左位置，
-     *  如果越界，直接扩充end有效区，如果不越界，更新最小值
+     *  如果l越界，说明ends中没有大于等于当前数的数，说明递增子序列长度可以扩充1，直接扩充end有效区，填好新的ends[l]；
+     *  如果l不越界，说明ends中有大于等于当前数的数，ends[l]需要更新成最小值。
+     *  
+     *  (直接看zuoshen代码里面的例子理解)
      */
     
     public static int lengthOfLIS(int arr[]) {
