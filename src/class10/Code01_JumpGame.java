@@ -1,3 +1,4 @@
+package class10;
 // 本题测试链接 : https://leetcode.com/problems/jump-game-ii/
 public class Code01_JumpGame {
     /*
