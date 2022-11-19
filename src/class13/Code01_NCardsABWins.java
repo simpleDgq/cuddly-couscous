@@ -128,7 +128,7 @@ public class Code01_NCardsABWins {
     /**
      * 动态规划:
      * 可变参数: cur
-     * 范围: 0 ~ b
+     * 范围: 通项公式有三个，有个下标i，都是在整个数组上玩，不会超过b，所以是
      * boolean dp[b]
      * 启示
         1. 看到枚举行为，想想能不能通过观察的方式把枚举行为替掉。
@@ -153,8 +153,8 @@ public class Code01_NCardsABWins {
         }
         // 从右往左填
         for(int i = a - 2; i >= 0; i--) {
-            double w = dp[i + 1] + dp[i + 1] * N;
-            if(i + N + 1 < b) {
+            double w = dp[i + 1] + dp[i + 1] * N; // a-2 及其往左的位置
+            if(i + N + 1 < b) { // 需要修正的位置
                w -= dp[N + i + 1];
             }
             dp[i] = w / N;
