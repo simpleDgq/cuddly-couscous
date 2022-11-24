@@ -1,5 +1,7 @@
 package class14;
 
+import java.util.Stack;
+
 //本题测试链接 : https://leetcode.com/problems/recover-binary-search-tree/
 public class Code05_RecoverBinarySearchTree {
     // 恢复搜索二叉树
@@ -22,6 +24,15 @@ public class Code05_RecoverBinarySearchTree {
         
         树上节点的数目在范围 [2, 1000] 内
         -2^31 <= Node.val <= 2^31 - 1
+     */
+    
+    /**
+     * 
+     * 思路:
+     * 可能有两对或一对降序
+        第一个错误节点是第一回降序的第一个节点，第二个错误节点是最后一回降序的第二个节点。
+        可以把错误节点交换值(leetcode只要求交换值)，也可以从结构上彻底调对(这个很难，略过)。
+     *
      */
     // 不要提交这个类
     public static class TreeNode {
@@ -80,4 +91,36 @@ public class Code05_RecoverBinarySearchTree {
         ans[1] = e2;
         return ans;
     }
+    
+    // 使用中序遍历实现，时间复杂度O(N) 空间0(H) H表示树的高度
+    public static void in(TreeNode head) {
+        if(head == null) {
+            return;
+        }
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        TreeNode cur = head;
+        TreeNode preNode = null; // 记录中序遍历的前一个节点
+        TreeNode e1 = null; // 第一次降序的第一个节点
+        TreeNode e2 = null; // 最后一次降序的第二个节点
+        while(!stack.isEmpty() || cur != null) { // cur不为空，左边界节点一直入栈
+            if(cur != null) {
+                stack.push(cur);
+                cur = cur.left;
+            } else {
+                cur = stack.pop();
+//                System.out.println(cur.value);
+                if(preNode != null && preNode.val >= cur.val) { // 降序了
+                    e1 = e1 == null ? preNode : e1; // 记录第一次降序的第一个节点
+                    e2 = cur; // 记录最后一次降序的第二个节点
+                }
+                preNode = cur; // 记录中序遍历的前一个节点
+                cur = cur.right; // cur变成当前弹出节点的右节点，后面cur的left又会入栈
+            }
+        }
+        // 交换e1和e2的值
+        int temp = e1.val;
+        e1.val = e2.val;
+        e2.val = temp;
+    }
+    
 }
