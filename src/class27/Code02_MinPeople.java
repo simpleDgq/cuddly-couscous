@@ -59,6 +59,7 @@ public class Code02_MinPeople {
      *  x从arr[0]开始，c从1开始，
      *  如果后面的数和x相等，则c++，说明是同一个组
      *  如果不相等，说明是新的组，结算上一组，同时将x赋值为新组的值arr[i],c=1
+     *  注意退出for的时候，最后一组没有结算，需要结算。
      */
     public int numRabbits(int[] answers) {
         if(answers == null || answers.length == 0) {
