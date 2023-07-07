@@ -22,6 +22,8 @@ public class Problem_0091_DecodeWays {
      * 潜台词：str[0...index-1]已经转化完了，不用操心了
      * str从index出发，及其往后的字符，能转出多少有效的，返回方法数
      * 
+     * 
+     * 这题还有一个扩展题: 639题
      */
     public int numDecodings(String s) {
         if(s == null || s.length() == 0) {
