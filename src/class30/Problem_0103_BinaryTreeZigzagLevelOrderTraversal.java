@@ -25,6 +25,8 @@ public class Problem_0103_BinaryTreeZigzagLevelOrderTraversal {
      * 思路:
      * 二叉树的层次遍历，搞一个size，记录每层要弹出多少个
      * 有左加左，有右加右
+     * 
+     * 这题关于方向还有点点绕
      */
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> ans = new ArrayList<>();
