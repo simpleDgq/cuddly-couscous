@@ -121,6 +121,8 @@ public class Problem_0139_WordBreak {
      * 扩展: 求有多少种分解方法
      * 能不能被分解, 有一个为true就结束
      * 方法数是要把所有可能性累加
+     * 
+     * dp[i]: word从i出发及其往后的所有被分解的方法数是多少?
      */   
     public static int wordBreak2(String s, List<String> wordDict) {
          if(s == null || s.length() == 0 || wordDict == null || wordDict.size() == 0) {
@@ -170,7 +172,7 @@ public class Problem_0139_WordBreak {
                 if(cur.end) {
                     dp[i] += dp[end + 1];
                 }
-                // 求所有可能的前缀，所有的方法数加起来
+                // 求所有可能的前缀，所有的方法数加起来，所以这里不像上面那题break
              }
          }
          return dp[0];
