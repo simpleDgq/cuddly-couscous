@@ -27,7 +27,7 @@ public class Problem_0127_WordLadder {
      */
     
     /**
-     * beginWord 经过几次转换能够变成endWord，每次只能变一个字符，每次转换得到的串都要在wordlist中，求最小的转换次数。
+     * beginWord 经过几次转换能够变成endWord，每次只能变一个字符，每次转换得到的串都要在wordlist中，求最短转换序列的长度。
      * 
      * 思路: 
      * 1. 将beginWord加入到wordlist中，然后对于其中的每一个单词，先生成邻居表
@@ -41,6 +41,8 @@ public class Problem_0127_WordLadder {
      * 如果没有找到，就加入队列中，一层一层遍历，直到找到endWord
      * 
      * 优化: 从两头往中间搞，优化常数时间
+     * 永远从小的一段开始搞，比如，左边的字符串的邻居表大小是150个，右边的字符串的邻居表大小是70，
+     * 那么就从右边开始；后面每一次都是从小的开始
      * 
      * 时间复杂度:
      * 
@@ -113,10 +115,73 @@ public class Problem_0127_WordLadder {
         return nexts;
     }
     
+    /**
+     * 优化解法，从两头往中间搞
+     * 需要掌握
+     * 
+     * 两端分别建立一个hashSet，存储两端的邻居表
+     * 
+     * 从start端开始宽度优先遍历，遍历的过程中，生成每个单词的邻居表，存放在next邻居表中，
+     * 然后比较next和另一端的邻居表进行比较，谁小，下一次就从哪段开始
+     */
+    public static int ladderLength2(String beginWord, String endWord, List<String> wordList) {
+        // 将list变成hashSet，可以去重
+        HashSet<String> dict = new HashSet<String>(wordList);
+        if(!dict.contains(endWord)) {
+            return 0;
+        }
+        // startSet是较小的，endSet是较大的
+        // 开始端的邻居表，代表某一层的所有字符串
+        HashSet<String> startSet = new HashSet<String>();
+        startSet.add(beginWord); // 刚开始都只有一个字符串
+        // 结束端的邻居表，代表某一层的所有字符串
+        HashSet<String> endSet = new HashSet<String>();
+        endSet.add(endWord);
+        // 不走回头路，每一层访问过的字符串，不在访问
+        HashSet<String> visitSet = new HashSet<String>();
+        // len表示距离，如果beginWord变1次就能到endWord，距离就是2
+        for(int len = 2; !startSet.isEmpty(); len++) {
+            // 宽度优先遍历，对于startSet中的每一个单词
+            // 都变换，生成邻居表，作为下一层
+            HashSet<String> nextSet = new HashSet<String>();
+            for(String str : startSet) {
+                char chars[] = str.toCharArray();
+                for(int i = 0; i <= chars.length - 1; i++) {
+                    char temp = chars[i];
+                    for(char c = 'a'; c <= 'z'; c++) {
+                        if(c != temp) {
+                            chars[i] = c;
+                            String next = String.valueOf(chars);
+                            // 这么写为什么不对？
+//                          if(next.equals(endWord)) {
+//                              return len;
+//                          }
+                            // 如果两头夹逼的过程中，endSet中已经撞上了，说明两边已经对接上了，直接返回
+                            if(endSet.contains(next)) {
+                                return len;
+                            }
+                            // 如果以前没有访问过(保证不走回头路)，而且在dict中存在，放入next层
+                            if(!visitSet.contains(next) && dict.contains(next)) {
+                                nextSet.add(next);
+                                visitSet.add(next);
+                            }
+                        }
+                    }
+                    chars[i] = temp;
+                }
+            }
+            // endSet, nextSet进行比较，谁小，谁就作为下一次的startSet
+            // 较大的作为endSet
+            startSet = (endSet.size() > nextSet.size()) ? nextSet : endSet;
+            endSet = (startSet == endSet) ? nextSet : endSet;
+        }
+        return 0;  
+    }
+    
     public static void main(String[] args) {
         String beginWord = "hit";
         String endWord = "cog";
-        List<String> dict = new ArrayList<String>(Arrays.asList("hot","dot","dog","lot","log"));
-        ladderLength(beginWord, endWord, dict);
+        List<String> dict = new ArrayList<String>(Arrays.asList("hot","dot","dog","lot","log","cog"));
+        System.out.println(ladderLength2(beginWord, endWord, dict));
     }
 }
