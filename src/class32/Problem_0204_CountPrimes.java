@@ -36,7 +36,7 @@ public class Problem_0204_CountPrimes {
             return 0;
         }
         // 某个数j已经不是素数了，f[j] = true;
-        boolean f[] = new boolean[n];
+        boolean f[] = new boolean[n]; // n个数需要标记
         // 所有偶数都不要，还剩几个数
         // n = 8， n / 2 = 4, 还剩4个数
         // n = 7， n / 2 = 3，还剩3个数，7是自己，不需要判断(题目要求小于n)，所以3是对的
@@ -55,7 +55,7 @@ public class Problem_0204_CountPrimes {
                 // 是倍数的位置，一定不是素数，标记
                 if(!f[j]) {
                     --count;
-                    f[i] = true;
+                    f[j] = true;
                 }
             }
         }
