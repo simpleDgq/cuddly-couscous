@@ -43,6 +43,7 @@ public class Problem_0204_CountPrimes {
         int count = n / 2;
         // 从3开始尝试，i每次加2
         // 3 5 7 9打头去尝试，i * i要小于n，i每次加2
+        // 每次都要尝试i * i, i * i如果大于n了就不用搞了
         for(int i = 3; i * i < n; i += 2) {
             // 如果当前的i已经不是素数了，说明这个数不需要试了，去搞下一个数
             if(f[i]) {
