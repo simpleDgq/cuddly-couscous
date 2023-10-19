@@ -1,4 +1,4 @@
-package clsss33;
+package clss33;
 
 // 237. 删除链表中的节点
 public class Problem_0237_DeleteNodeInLinkedList {

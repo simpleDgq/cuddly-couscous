@@ -1,4 +1,4 @@
-package clsss33;
+package clss33;
 
 // 213. 打家劫舍 II
 public class Problem_0213_HouseRobberII {
