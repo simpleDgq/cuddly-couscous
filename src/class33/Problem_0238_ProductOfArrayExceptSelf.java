@@ -1,4 +1,4 @@
-package clss33;
+package class33;
 
 // 238. 除自身以外数组的乘积
 public class Problem_0238_ProductOfArrayExceptSelf {

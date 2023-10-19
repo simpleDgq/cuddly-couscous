@@ -1,4 +1,4 @@
-package clss33;
+package class33;
 
 // 242. 有效的字母异位词
 public class Problem_0242_ValidAnagram {

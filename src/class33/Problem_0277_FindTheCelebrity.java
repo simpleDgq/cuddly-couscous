@@ -1,4 +1,4 @@
-package clss33;
+package class33;
 
 public class Problem_0277_FindTheCelebrity {
 
