@@ -49,10 +49,12 @@ public class Problem_0340_LongestSubstringWithAtMostKDistinctCharacters {
      * 
      * 
      * 整体算法流程:
-     * 1.初始化左右指针 left 和 right 为 0。
-     * 2.将 right 指针右移，一直往右扩，直到窗口中包含超过 k 个不同字符。
-     * 3.如果滑动窗口中的字符种类超过了k，说明不能往右扩了，缩小窗口
-     * 4.更新最长子串的长度。
+     * 1.如果字符串为空或者 k 是零的话返回 0。
+     * 2.设置指针为字符串开头 left = 0 和 right = 0
+     * 3.当 right < N 时：
+     *      1)将当前字符 s[right] 加入哈希表并且向右移动 right 指针。
+     *      2)如果哈希表包含 k + 1 个不同字符，在哈希表中移去最左出现的字符(s[left])，右移动 left 指针使得滑动窗口只包含 k 个不同字符。
+     *      3)更新 maxLen = max(maxLen, right - left)。
      */
     public static int lengthOfLongestSubstringKDistinct(String s, int k) {
         if(s == null || s.length() == 0 || k <= 0) {
