@@ -55,14 +55,14 @@ public class Problem_0341_FlattenNestedListIterator {
             
         }
 
-        @Override
-        public Integer next() {
-            
-        }
-
-        @Override
-        public boolean hasNext() {
-            
-        }
+//        @Override
+//        public Integer next() {
+//            
+//        }
+//
+//        @Override
+//        public boolean hasNext() {
+//            
+//        }
     }
 }
