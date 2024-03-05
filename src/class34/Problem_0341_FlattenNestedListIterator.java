@@ -49,20 +49,20 @@ public class Problem_0341_FlattenNestedListIterator {
     }
     
     
-    public class NestedIterator implements Iterator<Integer> {
-
-        public NestedIterator(List<NestedInteger> nestedList) {
-            
-        }
-
-//        @Override
-//        public Integer next() {
+//    public class NestedIterator implements Iterator<Integer> {
+//
+//        public NestedIterator(List<NestedInteger> nestedList) {
 //            
 //        }
 //
-//        @Override
-//        public boolean hasNext() {
-//            
-//        }
-    }
+////        @Override
+////        public Integer next() {
+////            
+////        }
+////
+////        @Override
+////        public boolean hasNext() {
+////            
+////        }
+//    }
 }
