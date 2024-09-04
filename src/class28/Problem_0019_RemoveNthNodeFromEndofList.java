@@ -23,7 +23,7 @@ public class Problem_0019_RemoveNthNodeFromEndofList {
      * 
      * 双指针
      * 
-     * cur从头节点开始，走n步
+     * cur从头节点开始，走n + 1步
      * 然后pre从头开始，和cur一起走
      * 
      * 当cur为null的时候，将pre.next指向pre.next.next
@@ -59,10 +59,10 @@ public class Problem_0019_RemoveNthNodeFromEndofList {
         if(n > 0) {
             return head;
         }
-        // 如果pre == null, 说明要删除的是头节点
+        // 如果n == 0, 说明要删除的是头节点
         // 例如 3个节点，要删除倒数第三个节点，当cur等于null的时候，n = 0
         // 经过上面的while循环之后，pre是null
-        if(pre == null) {
+        if(n == 0) {
             return head.next; 
         }
         // 删除要删除的节点
