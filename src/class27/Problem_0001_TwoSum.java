@@ -34,6 +34,11 @@ public class Problem_0001_TwoSum {
         // key 某个之前的数   value 这个数出现的位置
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
         int N = nums.length;
+        /**
+         * 两个元素x，y必然是一前一后出现的，如果存在符合条件的解，
+         * 在遍历到x时，哈希表里没有符合的y，此时把x加入到了哈希表里，
+         * 当遍历到y时，就可以在哈希表里找到对应的x了，所以只需要一次遍历，
+         */
         for(int i = 0; i <= N - 1; i++) {
             if(map.containsKey(target - nums[i])) {
                 return new int[] {i, map.get(target - nums[i])};

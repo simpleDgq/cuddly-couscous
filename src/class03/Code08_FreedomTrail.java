@@ -2,7 +2,6 @@ package class03;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class Code08_FreedomTrail {
 	
