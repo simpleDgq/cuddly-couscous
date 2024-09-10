@@ -111,7 +111,7 @@ public class Code05_MinWindowLength {
         int M = t.length();
         char s1[] = s.toCharArray();
         char s2[] = t.toCharArray();
-        int map[] = new int[256];
+        int map[] = new int[256]; // 这题如果用hashMap的话，得用两个。还有点复杂，没搞明白，为什么一个数组也行
         for(int i = 0; i <= M - 1; i++) {
             map[s2[i]]++;
         }
