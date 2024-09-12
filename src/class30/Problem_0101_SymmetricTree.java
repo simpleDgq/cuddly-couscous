@@ -4,6 +4,8 @@ package class30;
 public class Problem_0101_SymmetricTree {
     /**
      * 给你一个二叉树的根节点 root ， 检查它是否轴对称。
+     * 
+     * 思路：传入两个root，相当于两颗树进行比较
      */
     public static class TreeNode {
         int val;
@@ -29,7 +31,7 @@ public class Problem_0101_SymmetricTree {
             return true;
         }
 
-        // 将root1的左子树与root2的右子树进行比较; 同时将root1的右子树和root2的右子树进行比较
+        // 将root1的左子树与root2的右子树进行比较; 同时将root1的右子树和root2的左子树进行比较
         // 值相等
         return root1.val == root2.val && compareLeftWithRight(root1.left, root2.right) 
         && compareLeftWithRight(root1.right, root2.left);
