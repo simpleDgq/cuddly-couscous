@@ -16,8 +16,9 @@ public class Problem_0017_LetterCombinationsOfAPhoneNumber {
      * 
      * 搞一张表，将按键代表的字符都存放起来
      * 遍历每一个数字，取出它代表的所有的字符，
-     * 然后每一个字符，都去取下一个数字代表的字符，
-     * 深度优先遍历，深度优先遍历返回的时候，收集答案
+     * 每个字符都加入到path中一次，然后，去取下一个数字代表的字符，
+     * 递归去搞
+     * 
      */
     public static char[][] phone = { 
             { 'a', 'b', 'c' }, // 2    0
@@ -53,7 +54,7 @@ public class Problem_0017_LetterCombinationsOfAPhoneNumber {
             // 每一个字符打头去搞下一个index位置的数字。深度优先遍历
             for(char cur : chars) {
                 // 当前字符加到path里面
-                path[index] = cur;
+                path[index] = cur; // path的长度是和ste相等的，选了一个数字，相当于已经选了这个数字代表的一个字母。所以这里是index
                 // 去搞下一个位置
                 process(str, index + 1, path, ans);
             }
