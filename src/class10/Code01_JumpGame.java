@@ -29,7 +29,7 @@ public class Code01_JumpGame {
     /**
      *  三个变量搞定:
      *  step: 来到当前位置跳了多少步
-     *  cur: 如果不增加步数，step内，最远能跳到哪
+     *  cur: 如果不增加步数，step内，当前能够跳到的最远位置
      *  next: 如果允许你多跳1步，最远能跳到哪
      *  
      *  初始状态: 从0位置出发，一步也不用跳
@@ -45,18 +45,25 @@ public class Code01_JumpGame {
      * 
      */
     public int jump(int[] nums) {
-        if(nums == null || nums.length == 0) {
+        /**
+         * step步数的情况下，当前最远能够跳到的位置是cur，
+         * 如果当前遍历到的下标已经超过当前能够跳到的位置cur了，说明该往后跳一步了，
+         * 跳的时候，要选择能够跳到的最远的位置
+         * 搞一个next，记录如果多跳一步的话，能够跳到的最远位置
+         */
+        if (nums == null || nums.length == 0) {
             return 0;
         }
+        int N = nums.length;
         int step = 0;
-        int cur = 0;
-        int next = 0;
-        for(int i = 0; i <= nums.length - 1; i++) {
-            if(i > cur) { // 如果i，超过了当前step内能跳到的最远位置，说明step要++了，同时cur更新成如果多跳一步能够跳到的最远位置。==> 每次都在准备如果多跳一步能够到达的最远位置next
-               step++;
-               cur = next;
+        int cur = 0; // 0步的情况下，当前最远只能跳到0
+        int next = nums[0]; // 多跳一步的情况下，最远能够跳到的位置
+        for (int i = 1; i <= N - 1; i++) {
+            if (i > cur) {
+                step++;
+                cur = next;
             }
-            next = Math.max(next, i + nums[i]); // 每次都在准备如果多跳一步能够到达的最远位置next
+            next = Math.max(next, i + nums[i]);
         }
         return step;
     }
