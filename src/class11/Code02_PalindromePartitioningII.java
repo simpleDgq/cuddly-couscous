@@ -104,7 +104,9 @@ public class Code02_PalindromePartitioningII {
      * 生成checkMap，检查i到j位置是不是回文:
      * dp[N][N] 的表，记录任意i到j是不是回文。
      * 对角线位置，只有一个字符，所以都是true，
-     * 第二条对角线位置，只有两个字符，如果str[i] == str[j]就是true，否则是false
+     * 第二条对角线位置，比如0到1,1到2...
+     * 只有两个字符，如果str[i] == str[j]就是true，否则是false
+     * 左下半区不用
      * 
      * 普遍的[i][j]位置，需要str[i] == str[j] 且[i+1][j-1]是回文 -> dp[i][j] = str[i] == str[j]
      * && dp[i+1][j-1]
