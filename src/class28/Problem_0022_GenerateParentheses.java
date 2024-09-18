@@ -27,7 +27,7 @@ public class Problem_0022_GenerateParentheses {
     }
     
     // 已经做过的决定存放在path中，0~index-1位置都填好了，现在来到了index位置，做决定
-    // leftMinusRight和leftRest是为了便于剪枝
+    // 来到一个位置，要么填左括号，要么填右括号，根据leftRest和leftMinusRight判断是否能填左右括号
     // leftMinusRight: 已经做过的决定中左扩号的数量 - 右括号的数量
     // leftRest: 剩下的可用的左括号数量，对于给定的n，左括号和右括号可用的数量都是n
     // ans用于存放最终的答案
