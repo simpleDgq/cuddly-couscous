@@ -88,7 +88,7 @@ public class Problem_0124_BinaryTreeMaximumPathSum {
         // maxPathSumFromHead 就是前面已经计算出来的，必须以X为头，往左或者往右，能扎出来的最大值
         maxPathSum =  Math.max(maxPathSum, maxPathSumFromHead);
         // 经过X节点，从左往右，或者从右往左
-        // 左信息和右信息必须存在，而且左子树的maxPathSum 和 右子树的maxPathSum 都必须大于0，这样才有可能将答案推高
+        // 左信息和右信息必须存在，而且左子树的maxPathSumFromHead 和 右子树的maxPathSumFromHead 都必须大于0，这样才有可能将答案推高
         if(leftInfo != null && rightInfo != null && leftInfo.maxPathSumFromHead > 0 && rightInfo.maxPathSumFromHead > 0) {
             maxPathSum = Math.max(maxPathSum, leftInfo.maxPathSumFromHead + rightInfo.maxPathSumFromHead + X.val);
         }

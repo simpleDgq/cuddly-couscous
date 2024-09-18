@@ -31,7 +31,9 @@ public class Problem_0079_WordSearch {
     }
     /**
      * 当前来到了board的[i][j]位置，你给我返回能不能搞定从word的k位置出发的
-     * 剩下的所有字符
+     * 剩下的所有字符。
+     * 如果能搞定k位置的字符，那么上下左右递归去搞。不能走回头路，所以搞过的位置要标记
+     * 搞完k位置，搞下一个位置的时候，要恢复现场
      */
     public boolean process(char[][] board, char word[], int i, int j, int k) {
         if(k == word.length) { // 如果k已经到了word的结尾了，表示已经全部搞定了

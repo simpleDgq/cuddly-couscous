@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.List;
 
 // 207. 课程表
 public class Problem_0207_CourseSchedule {
@@ -27,6 +28,77 @@ public class Problem_0207_CourseSchedule {
      * 输出：false
      * 解释：总共有 2 门课程。学习课程 1 之前，你需要先完成​课程 0 ；并且学习课程 0 之前，你还应先完成课程 1 。这是不可能的。
      */
+    
+
+    
+    // 方法1: 不使用Course类   掌握
+    /**
+     * nexts 用ArrayList表示
+     * in 也用数组，下标表示课程，值表示入度
+     * 
+     * 给定的prerequisites数组，相当于是一张图，问题相当于是能不能按照某个顺序把这个图遍历完
+     * 
+     * 其实就是拓扑排序。
+     * 
+     * 找入度为0的节点，如果能一直擦掉所有的节点，就能拓扑排序，否则就不能。
+     * 步骤：
+     * 1. 遍历数组，建立好每个节点的入度表以及邻居表
+     * 2. 将入度为0的节点入队列
+     * 3. 然后入度为0的节点出队列，出队列的同时统计出队列的节点的数量，
+     * 以及入度为0的节点的邻居节点的入度都减1，如果过程中有新的入度为0的节点，加入队列
+     * 4. 如果出队列的节点数正好是课程的数量。则说明能够遍历完，没有环
+     */
+    public boolean canFinish2(int numCourses, int[][] prerequisites) {
+        if(numCourses <= 0) {
+            return false;
+        }
+        if(prerequisites == null || prerequisites.length == 0) {
+            return true;
+        }
+        // 初始化邻居表
+        List<List<Integer>> nexts = new ArrayList<List<Integer>>();
+        for(int i = 0; i <= numCourses - 1; i++) { // 都先初始化为空。因为有的节点可能没有邻居(下一层节点)
+            nexts.add(new ArrayList<Integer>());
+        }
+        // 遍历整个数组，建立好每个节点的入度表以及邻居表
+        int in[] = new int[numCourses];
+        for(int [] pre : prerequisites) {
+            // 图上的边是从from到to
+            int from = pre[1];
+            int to = pre[0];
+            // to节点的入度+1
+            in[to]++;
+            // from节点的邻居表要加上to
+            nexts.get(from).add(to);
+        }
+        // 入度为0的节点放入队列
+        int queue[] = new int[numCourses]; // 用数组代替队列
+        int l = 0;
+        int r = 0;
+        for(int i = 0; i <= numCourses - 1; i++) {
+            // i这个节点入度为0
+            if(in[i] == 0) {
+                //i节点应该被放入队列
+                queue[r++] = i;
+            }
+        }
+        // 入度为0的节点出队列，记录出队列的节点个数。同时入度为0的节点的邻居节点的入度减1
+        // 如果有入度为0的节点，加入队列
+        int count = 0;
+        while(l != r) {
+            int zeroIn = queue[l++];
+            count++;
+            // 入度为0的节点的邻居节点入度减1
+            for(int next : nexts.get(zeroIn)) {
+                in[next]--;
+                if(in[next] == 0) {
+                    queue[r++] = next;
+                }
+            }
+        }
+        return count == numCourses;
+    }
+    
     
     /**
      * 思路:
@@ -122,67 +194,5 @@ public class Problem_0207_CourseSchedule {
          * prerequisites = [[1,4],[2,4],[3,1],[3,2]]
          */
         return count == allNodes; 
-    }
-    
-    // 方法2: 不使用Course类
-    /**
-     * nexts 用ArrayList表示
-     * in 也用数组，下标表示课程，值表示入度
-     * 
-     * (掌握)
-     */
-    public boolean canFinish1(int numCourses, int[][] prerequisites) {
-        if(prerequisites == null || prerequisites.length == 0) {
-            return true; // 如果prerequisites为空，表示课程没有依赖，直接返回true
-        }
-        
-        // 每个课程建立好nexts数组
-        ArrayList<ArrayList<Integer>> nexts = new ArrayList<ArrayList<Integer>>();
-        for(int i = 0; i < numCourses; i++) {
-            nexts.add(new ArrayList<Integer>());
-        }
-        
-        // 建立好入度数组, 下标是课程，值是入度
-        int in[] = new int[numCourses];
-        
-        for(int[] preq: prerequisites) {
-            int from = preq[1]; // 先做的是from
-            int to = preq[0]; // 后做的是to
-            // 取出from的next数组，把to加进去
-            nexts.get(from).add(to);
-            // to的入度+1
-            in[to]++;
-        }
-        
-        // 队列 
-        // [L,r)
-        // 新来的元素放在r位置，r++
-        // 出队列，l位置，l++
-        int queue[] = new int[numCourses];
-        int l = 0;
-        int r = 0;
-        //入度为0的节点都进入队列
-        for(int i = 0; i < numCourses; i++) {
-            if(in[i] == 0) {
-                queue[r++] = i; 
-            }
-        }
-        
-        // 入度为0的课出去
-        int count = 0;
-        while(l != r) {
-            // 入度为0的课程，出队列
-            int courseInZero = queue[l++];
-            count++;
-            // 入度为0的邻居课程的入度都得减1
-            for(int next: nexts.get(courseInZero)) {
-                in[next]--;
-                if(in[next] == 0) {// 新的入度为0的，进入队列
-                    queue[r++] = next; 
-                }
-            }
-        }
-        
-       return count == nexts.size();
     }
 }

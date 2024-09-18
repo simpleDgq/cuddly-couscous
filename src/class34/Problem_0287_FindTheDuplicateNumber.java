@@ -10,20 +10,25 @@ public class Problem_0287_FindTheDuplicateNumber {
      */
     
     /**
-     * 思路:
+     * 1. 使用hashmap存，遍历一遍数组，看map中有没，有就直接返回 --> 空间复杂度O(N) 空间复杂度O(N)
+     * 2. 和求缺失的第一个正数一样。i位置应该放i+1，不断的交换，放好各个位置，遍历数组，如果i位置不是i+1，则
+     * 直接返回当前的数 时间复杂度O(N) 空间复杂度O(1) 但是改变了原数组
      * 
+     * 3.下面的方法，单链表上找第一个入环节点
+     * 思路:
+     * 同单链表上找第一个入环节点的问题一样
      * 
      * 例子: 从0位置的数出发，如果当前位置是5，则去5位置上找，如果5位置是3，则去3位置上
      * 如果3位置上是5，就形成了环，如果是3，也形成了环
      * 
-     * 当前位置的数是啥，下一步就找下标位当前数位置的数
+     * 当前位置的数是啥，下一步就找下标位是当前数位置的数
      * 
      * n = 6，范围是1-6，只有一个重复的数，必然存在一个入环的节点
      * 
      * 问题就变成了怎么通过有限几个变量在单链表上找第一个入环节点的问题
      * 
      * 
-     * 步骤:
+     * 步骤:  
      * 一个快指针, 一个慢指针。它俩都从开头出发，快指针一次走两步, 慢指针一次走一步，
      * 他俩一定会在环上的某个位置相遇，然后相遇的时候, 快指针重新回到开头，慢指针停在原地，
      * 接下来快指针变成一次走一步，慢指针继续一次走一步，他俩一定会第二次相遇。
@@ -31,19 +36,21 @@ public class Problem_0287_FindTheDuplicateNumber {
      * 
      */
     public int findDuplicate(int[] nums) {
-        if (nums == null || nums.length < 2) {
-            return -1;
+        if(nums == null || nums.length == 0) {
+            return 0;
         }
-        // fast 一次走两步，slow一次走一步
+        //fast指针一次走两步. 
         int fast = nums[nums[0]];
-        int slow = nums[0];
-        // 如果不相等，继续走
+        int slow = nums[0]; // slow指针一次走一步
+        // 第一次相遇的时候
         while(fast != slow) {
+            // fast走的时候，走到fast位置的数，指向的nums[fast]位置 --> nums[nums[fast]]
             fast = nums[nums[fast]];
             slow = nums[slow];
         }
-        // 相等之后，fast回到开始. 一次走一步，相遇的地方就是入环节点
+        // 相等的时候，fast回到头
         fast = 0;
+        // 快慢指针一起走，相遇的节点就是入环节点
         while(fast != slow) {
             fast = nums[fast];
             slow = nums[slow];
