@@ -90,7 +90,7 @@ public class Code03_TrappingRainWaterII {
             int i = cur.i;
             int j = cur.j;
             max = Math.max(cur.value, max); // 每弹出一个元素，看能不能推高瓶颈
-            // 弹出元素的上下左右，没有进过的都进对，同时结算水量
+            // 弹出元素的上下左右，没有进过的都进堆，同时结算水量
             if(i > 0 && !isEntered[i - 1][j]) { // 有上且没有进过堆
                 water += Math.max(0, max - heightMap[i - 1][j]); // 如果是负数，说明上边的元素比max瓶颈大，存不住水，返回0。 
                                                                 //如果小，则能够存max-heightMap[i - 1][j]的水量
