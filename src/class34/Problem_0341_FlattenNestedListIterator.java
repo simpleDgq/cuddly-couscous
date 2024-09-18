@@ -1,6 +1,5 @@
 package class34;
 
-import java.util.Iterator;
 import java.util.List;
 
 // 341. 扁平化嵌套列表迭代器
