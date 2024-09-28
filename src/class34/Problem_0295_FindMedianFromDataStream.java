@@ -1,6 +1,5 @@
 package class34;
 
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
 // 295. 数据流的中位数
@@ -40,11 +39,12 @@ public class Problem_0295_FindMedianFromDataStream {
      * 2.返回流吐出的所有数字的中位数
      * 
      * 数字可以有重复值，
-     * 如果没有重复值，可以用有序表
+     * 如果没有重复值，可以用有序表TreeMap
      * 
      * 思路:
      * 用两个堆，大根堆 + 小根堆  -> 堆弹出和加入数字的事件复杂度都是logN级别
      * 
+     * 这题的目标是：数组中较小的一半数全部放在大根堆，较大的一半全部放在小根堆，那么大根堆和小根堆的堆顶一顶能够算出中位数。
      * 流程:
      * 1.第一个数字，直接进入大根堆
      * 
@@ -72,7 +72,7 @@ public class Problem_0295_FindMedianFromDataStream {
      * 
      * 两者size相差2，所以要调整，将小根堆的堆顶元素5，放到大根堆中
      * 
-     * 大根堆事5，3 小根堆事6，7 --> 可以发现数组中较小的一般全都在大根堆中，较小的一般全都在小跟堆中
+     * 大根堆事5，3 小根堆事6，7 --> 可以发现数组中较小的一半全都在大根堆中，较大的一半全都在小跟堆中
      * 而且大根堆和小根堆的堆顶一顶能够算出中位数
      * 
      */
@@ -103,7 +103,7 @@ public class Problem_0295_FindMedianFromDataStream {
         public double findMedian() {
             // 两个堆的大小一样，说明是偶数个数
             if(maxH.size() == minH.size()) {
-                // 堆顶元素除2
+                // 堆顶元素相加除2
                 return ((double)(maxH.peek() + minH.peek())) / 2; // 先转double，再除2
             } else {
                 // 奇数个数，取size大的堆顶
@@ -115,7 +115,7 @@ public class Problem_0295_FindMedianFromDataStream {
             }
         }
         
-        // 两个堆的大小相差超过2，将大的堆顶放到小的堆里面去
+        // 两个堆的大小相差超过2，将size大的堆的堆顶放到小的堆里面去
         public void blance() {
             if(Math.abs(maxH.size() - minH.size()) == 2) {
                 if(maxH.size() > minH.size()) {

@@ -30,6 +30,7 @@ public class Problem_0131_Partition {
         if (i == s.length()) {
             // 如果i来到了str结尾的位置，path中就是答案，加入
             ans.add(new ArrayList<>(path));
+            return;
         }
         // i到它后面的位置都尝试一遍。看是不是回文，是的话就加入path，然后从新的位置开始搞
         for (int end = i; end <= s.length() - 1; end++) {

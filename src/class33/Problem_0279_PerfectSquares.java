@@ -18,8 +18,31 @@ public class Problem_0279_PerfectSquares {
      * 解释：13 = 4 + 9
      */
     
+    
     /**
-     * 思路: 
+     * 1. 动态规划
+     * dp[i] 表示最少需要多少个数的平方来表示整数 i。
+     * 
+     * 这些数必然落在区间 [1, 根号n]。我们可以枚举这些数，假设当前枚举到 j，
+     * 那么我们还需要取若干数的平方，构成 i−j^2。
+
+     * 最少需要的平方数个数来表示i - j^2 + 1就是i位置的答案。
+     * dp[i] = Math.min(min,dp[i - j^2]) + 1;
+     */
+    public int numSquares(int n) {
+        int dp[] = new int[n + 1]; // 最少需要多少数来表示n，所以下标取值范围为0到n
+        // dp[0] = 0;
+        for (int i = 1; i <= n; i++) {
+            int min = Integer.MAX_VALUE;
+            for (int j = 1; j * j <= i; j++) { // j*j <= i相当于j<=根号i
+                min = Math.min(min, dp[i - j * j]); // 最少需要多少个平方数来表示i-j^2
+            }
+            dp[i] = min + 1; // 搞定i-j^2最少需要的个数 + 搞定j^2的个数1 = 搞定i需要的个数
+        }
+        return dp[n];
+    }
+    /**
+     * 思路:
      * 
      * 题意: 一个数最少可以用几个数的平方累加得到 --> N它最少能比几个数的平方拆出来
      * 
@@ -39,7 +62,7 @@ public class Problem_0279_PerfectSquares {
         // a是第一部分
         // b是第二部分
         for (int a = 0; a * a <= n; ++a) {
-            // a * a +  b * b = n  
+            // a * a + b * b = n
             int b = (int) Math.sqrt(n - a * a); // n - a * a 之后开平方，求第二部分b
             if (a * a + b * b == n) { // 如果a的平方加b的平方是n。找到答案
                 return (a > 0 && b > 0) ? 2 : 1; // a 和 b都大于0说明有两个，任何一个为0，说明只有一个

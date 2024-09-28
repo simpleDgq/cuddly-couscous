@@ -22,7 +22,7 @@ public class Code04_PlaindromeWays {
      *   4) 回文子序列一定选择L, 一定选择R位置的字符 d个 (只有当L位置的字符等于R位置的字符的时候，才有这种情况)
      *   dp[L][R] = a + b + c + d
      *   
-     *  而dp[L][R]和dp[L+1][R], dp[L][R-1], dp[L+1][R-1]三个值有关, 需要用这三个值加工出dp[L][R]。
+     *  而dp[L][R]和dp[L+1][R], dp[L][R-1], dp[L+1][R-1]，dp[L-1][R-1]4个值有关, 需要用这4个值加工出dp[L][R]。
      *      1.[L]位置字符!=[R]位置字符的情况, 如何求dp[L][R]:
      *         1) 先看看L位置的数不等于R位置的字符, 就是没有可能性4, dp[L][R] = a+b+c
      *         如何得到a+b+c?
@@ -63,8 +63,7 @@ public class Code04_PlaindromeWays {
         for(int i = 0; i <= N - 2; i++) {
             dp[i][i+1] = strChs[i] == strChs[i + 1] ? 3 : 2;
         }
-        // 从第三条对角线，一条条填好
-        // 从下往上斜着填
+        // 从下往上，从左往右填
         for(int L = N - 3; L >= 0; L--) { // 这里的下标变换，举例子去推，然后直接记住
             for(int R = L + 2; R <= N - 1; R++) {
                 dp[L][R] += dp[L+1][R] + dp[L][R-1] - dp[L+1][R-1];

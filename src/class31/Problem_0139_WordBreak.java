@@ -1,6 +1,5 @@
 package class31;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //139. 单词拆分
@@ -35,6 +34,8 @@ public class Problem_0139_WordBreak {
      * 要搞定f(N - 1) ，取决于f(N)，从N出发及其往后的所有单词，能不能被搞定，空串，能被搞定
      * 
      * 任何一个f(i)都是依赖后面的, 一维动态规划，从dp[N]一直求到dp[0]
+     * 
+     *dp[i]: 以i位置开始的字符串能够被单词表分解?
      * 
      */
     // 前缀树节点
@@ -96,25 +97,15 @@ public class Problem_0139_WordBreak {
                    dp[i] |= dp[end + 1]; // dp[i]取决于后面end+1开始能不能被搞定 
                }
                // 如果从i位置出发到某个end作为前缀的情况下，能被分解，说明i位置出发找到了一种分解方案，
-               // 直接去搞下一个位置
+               // 直接去搞下一个i位置
+               // 因为我们只是要看能不能搞定，而不是求所有的方案，如果i位置出发已经找到一种方案了，
+               //说明i位置出发能搞定了，就去看i+1位置出发能不能搞定
                if(dp[i]) {
                    break;
                }
             }
         }
-        for(int i = 0; i <= N; i++) {
-            System.out.println(dp[i]);
-        }
         return dp[0];
-    }
-    
-    public static void main(String[] args) {
-        String s =
-                "leetcode";
-        List<String> wordDict = new ArrayList<String>();
-        wordDict.add("leet");
-        wordDict.add("code");
-        wordBreak(s, wordDict);
     }
     
     /**

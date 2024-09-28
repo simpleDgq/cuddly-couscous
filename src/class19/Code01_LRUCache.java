@@ -46,12 +46,14 @@ public class Code01_LRUCache {
      * 
      * 思路:
      * hashMap + 双向链表
-     * 双向链表+哈希表实现
-     * Hash表里:
-     * key: A
-     * value: Key对应的节点Node (A, 3), 一个双向链表的节点, 有last, next指针
+     * Hash表里: key: A  value: Key对应的节点Node (A, 3), 一个双向链表的节点, 有last, next指针
+     * 
      * 用双向链表来表示谁是较近操作的, 谁是较远操作的
-     * 越靠近双向链表的尾巴越近，越靠近双向链表的头部越远
+     * put元素的时候，如果链表中不存在这个元素，则直接加入双向链表的尾部；如果存在这个元素，则从双向链表中将
+     * 这个元素取下来，放在尾部； 通过hashMap判断一个节点是否链表中存在。没来一个元素同时加入hashmap和链表；
+     *     容量满了之后，删除链表的头节点，也要从hashmap中删除对应的节点
+     * get元素的时候，将对应的元素从链表中取下来放在链表的尾部。
+     * 
      * 双向链标记一个头指针，记一个尾指针, 可以很方便的把一个数据直接挂在尾巴上
      * 
      * 例子:
@@ -81,11 +83,11 @@ public class Code01_LRUCache {
     }
 
     public void put(int key, int value) {
-        cache.set(key, value);
+        cache.put(key, value);
     }
 
     // Node 节点
-    public static class Node<K, V> {
+    public class Node<K, V> {
         public K key;
         public V value;
         public Node<K, V> last;
@@ -98,7 +100,7 @@ public class Code01_LRUCache {
     }
 
     // 双向链表
-    public static class NodeDoubleLinkedList<K, V> {
+    public class NodeDoubleLinkedList<K, V> {
         // 双向链表的头尾节点
         public Node<K, V> head;
         public Node<K, V> tail;
@@ -160,7 +162,7 @@ public class Code01_LRUCache {
 
     }
 
-    public static class MyCache<K, V> {
+    public class MyCache<K, V> {
         public HashMap<K, Node<K, V>> map; // 方便通过key找到node
         public NodeDoubleLinkedList<K, V> nodeList; // 双向链表
         public final int capacity; // 容量，固定的
@@ -171,10 +173,10 @@ public class Code01_LRUCache {
             nodeList = new NodeDoubleLinkedList<K, V>();
         }
 
-        // set一个值，如果存在，则直接更新，并且放到双向链表的最后
+        // put一个值，如果存在，则直接更新，并且放到双向链表的最后
         // 如果不存在，则直接新建一个节点，挂在链表的最后，并且加入hashMap
         // 如果容量超过了，需要删除链表的头节点
-        public void set(K key, V value) {
+        public void put(K key, V value) {
             if (map.containsKey(key)) { // 如果存在
                 Node<K, V> node = map.get(key);
                 node.value = value;

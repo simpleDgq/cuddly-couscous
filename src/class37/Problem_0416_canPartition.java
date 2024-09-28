@@ -18,6 +18,11 @@ public class Problem_0416_canPartition {
      */
     
     /**
+     * 能够被划分为两个和相等的子集，那么子集的和一定是数组和的一半
+     * 该题可以转换为求，一个数组里面，子集能不能搞出数组累加和的一半target，
+     * 如果能搞定，剩下的数的累加和就是数组和的另一半
+     * 
+     * ==> 数组能不能搞出累加和的一半target
      * 背包问题
      * 
      * 动态规划: dp[i][j]: 0~i位置随便选，能不能搞出累加和j
@@ -26,6 +31,10 @@ public class Problem_0416_canPartition {
      * j 取值范围: 0~ sum
      * 
      * dp[N][sum + 1]
+     * 
+     * 普遍位置：dp[i][j] 
+     * 1.i位置不选，取决于0到i-1位置随便选，能不能搞出j
+     * 2.选i位置，取决于0到i-1位置随便选，能不能搞出j-nums[i]
      */
     
     public boolean canPartition(int[] nums) {
@@ -54,7 +63,7 @@ public class Problem_0416_canPartition {
         for(int j = 1; j <= sum; j++) {
              // 0位置不选的话，肯定搞不成j，因为j>=1；0位置选的话，如果nums[0]正好等于j，那么就能搞出
             if(nums[0] == j) {
-                dp[0][j] = false;
+                dp[0][j] = true;
             }
         }
         // 从上往下，从左往右填表

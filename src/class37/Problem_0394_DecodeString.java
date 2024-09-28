@@ -53,44 +53,46 @@ public class Problem_0394_DecodeString {
             return null;
         }
         char chars[] = s.toCharArray();
-        return process(chars, 0).ans;
+        return process(0, chars).ans;
     }
     
     public class Info {
         String ans;
-        int cur;
+        int index;
         public Info(String ans, int cur) {
             this.ans = ans;
-            this.cur = cur;
+            this.index = cur;
         }
     }
     // 从str的i位置往后开始转换，遇到右括号或者达到字符串的结尾就结束，
     // 返回info
-    public Info process(char str[], int i) {
-        int cur = 0;
-        StringBuilder ans = new StringBuilder();
-        while(i < str.length && str[i] != ']') { // 没有到达字符串的结尾且遇到的不是右括号
+    public Info process(int i, char[] str) {
+        int cur = 0; // 当前收集到的数字
+        StringBuilder ans = new StringBuilder(); // 当前的答案、用sb效率高
+        // 如果没有遇到左括号，或者没有到的字符串的结尾
+        while((i != str.length) && (str[i] != ']')) {
             // 如果遇到的是数字，则更新cur
             // 如果遇到的是字母，则加入到ans
             // 如果是左括号，调用process(i + 1)去搞
-            if(str[i] >= '0' && str[i] <= '9') { // 如果遇到了数字
+            if(str[i] >= '0' && str[i] <= '9') { // 如果遇到的是数字，更新cur
                 cur = cur * 10 + (str[i] - '0');
                 i++;
-            } else if((str[i] >= 'a' && str[i] <= 'z') || str[i] >= 'A' && str[i] <= 'Z') { // 如果遇到的是字母
+            } else if((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z')) { // 如果遇到的是字符
                 ans.append(str[i]);
                 i++;
-            } else { // 如果是左括号
-               Info info = process(str, i + 1);
-               // i+1位置出发的答案返回之后，继续上一次的递归，返回的ans生产好字符串，加入到上一次递归的ans里面去
-               ans.append(timesString(cur, info.ans));
-               // 然后从已经处理到的位置的下一个位置继续搞
-               i = info.cur + 1;
-               // 新的位置开始了，以前的cur已经被使用了，恢复cur
-               cur = 0;
+            } else { // 如果遇到的是左括号。我才不管怎么搞，直接去i + 1位置搜集info
+                Info info = process(i +1, str);
+                // i+1位置会返回，停的位置，以及i+1到停的位置的ans。
+                // i+1位置出发的答案返回之后，继续上一次的递归，返回的ans生产好字符串，加入到上一次递归的ans里面去
+                ans.append(timesString(cur, info.ans));
+                // 然后从已经处理到的位置的下一个位置继续搞
+                i = info.index + 1;
+                // 新的i了，cur以前已经用过，要恢复成0
+                cur = 0;
             }
         }
-        // 如果达到了字符串的结尾，或者遇到了右括号，直接返回搜集到的ans，以及当前处理到的位置
-        return new Info(ans.toString(), i);  
+        // 是右括号，或者到了字符串的结尾, 这一段搞完了，返回搞到的位置，以及这一段的答案
+        return new Info(ans.toString(), i);
     }
     
     public String timesString(int count, String ans) {

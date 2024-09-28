@@ -8,72 +8,67 @@ import java.util.PriorityQueue;
 // https://leetcode.cn/problems/top-k-frequent-elements/description/
 public class Problem_0347_TopKFrequentElements {
     /**
-     * 给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
+     * 思路：小根堆+词频表
+     * 1. 遍历一遍数组，建立一个词频表，记录在map中，key是数，value是每个数出现的次数
+     * 2. 搞一个小根堆，按照词频进行排序，词频小的放在上面。
+     * 
+     * 放入小根堆的过程：
+     * 遍历词频表，如果堆中的元素个数小于k个则直接加入小根堆
+     * 如果等于k个而且当前元素的词频比堆顶元素大，则直接加入堆
+     * 如果堆中的元素个数超过k个，弹出堆顶元素，保持堆中元素个数只有k个
+     * 最后收集堆中的元素就是词频最高的k个元素
      */
-    
-    
-    /**
-     * 思路: 词频表 + 小根堆
-     * 1. 遍历一遍数组，建立一个词频表，记录数组中，每个数出现的次数
-     * 2. 搞一个小根堆，按照词频进行排序，词频小的放在上面
-     * 遍历词频表，如果小根堆中的元素小于k，直接放入词频表中的元素;
-     * 如果等于k，则将当前遍历到的元素的词频和堆顶元素的词频进行比较;
-     * 如果大于，则将遍历到的元素加入到小根堆
-     */
-    public static int[] topKFrequent(int[] nums, int k) {
-        if(nums == null || nums.length == 0 || k <= 0) {
-            return null;
-        }
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for(int i = 0; i <= nums.length - 1; i++) {
-            if(map.containsKey(nums[i])) {
-                map.put(nums[i], map.get(nums[i]) + 1);
-            } else {
-                map.put(nums[i], 1);
-            }
-        }
-        
-        // 小跟堆，词频排序
-        PriorityQueue<Node> heap = new PriorityQueue<Node>(new NodeComparatpr());
-        for(int key : map.keySet()) {
-            int count = map.get(key);
-            Node node = new Node(key, count);
-            // 如果堆中的元素个数小于k，则继续往里面添加Node
-            if(heap.size() < k) {
-                heap.add(node); 
-            } else if(heap.size() == k && count > heap.peek().count) {
-                // 这里需要是else if，否则会报错。因为上面的if添加了元素之后，heap的size可能就是k了，而且堆可能经过
-                // 调整之后，堆顶的元素小于当前已经被加入堆中的元素。这种情况是不能继续加当前节点的，因为已经加了，而且可能被
-                // 调整到了堆的下面
-                // 如果等于k了，判断要加入的元素的词频，是不是比堆顶的大，是就加入
-                heap.add(node);
-                // 移除掉堆顶，保留K个元素
-                heap.poll();
-            }
-        }
-        int ans[] = new int[k];
-        // 堆中剩余的元素就是答案
-        int i = 0;
-        while(!heap.isEmpty()) {
-            ans[i++] = heap.poll().num;
-        }
-        return ans;
-    }
-    
-    public static class NodeComparatpr implements Comparator<Node> {
-        @Override
-        public int compare(Node o1, Node o2) {
-            // TODO Auto-generated method stub
-            return o1.count - o2.count;
-        }
-    }
-    
-    public static class Node {
-        int num;
-        int count;
+    class Node {
+        public int num;
+        public int count;
+
         public Node(int num, int count) {
             this.num = num;
             this.count = count;
         }
+    }
+
+    // 按照词频降序排序
+    class NodeComparator implements Comparator<Node> { // 记住怎么实现比较器的
+        public int compare(Node o1, Node o2) {
+            return o1.count - o2.count;
+        }
+    }
+    
+    public int[] topKFrequent(int[] nums, int k) {
+        if (nums == null || nums.length == 0 || k > nums.length) {
+            return null;
+        }
+        // 建立词频表
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int num : nums) {
+            if (map.containsKey(num)) {
+                map.put(num, map.get(num) + 1);
+            } else {
+                map.put(num, 1);
+            }
+        }
+        // 建好小根堆，放入k个元素
+        PriorityQueue<Node> heap = new PriorityQueue<Node>(new NodeComparator());
+        // 遍历map中的每一个元素
+        for(int num : map.keySet()) { // 记住map怎么取key的
+            int count = map.get(num);
+            Node node = new Node(num, count);
+            // 不足k个或者到了k个但是当前元素的词频比堆顶元素大，直接加入
+            if(heap.size() < k || (heap.size() == k && count > heap.peek().count)) {
+                heap.add(node);
+            }
+            // 如果堆的大小超过k个，移除最小的堆顶元素，保持堆中只有k个元素
+            if(heap.size() > k) {
+                heap.poll(); // 记住怎么弹出堆顶的
+            }
+        }
+        // 堆中剩下的k个元素就是答案
+        int ans[] = new int[k];
+        int index = 0;
+        while(!heap.isEmpty()) {
+            ans[index++] = heap.poll().num;
+        }
+        return ans;
     }
 }
