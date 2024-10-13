@@ -7,26 +7,12 @@ public class Problem_0019_RemoveNthNodeFromEndofList {
      */
     
     /**
-     * 思路:
-     * 有17个节点, 删掉倒数第8个
-     * 先数够8个, 然后要删的节点指针指向第一个节点
-     * 接下来两个指针共同往下走
-     * 当第一个指针到最后一个的时候, 待删除指针指向的就是要删除的节点
+     * 思路：
+     * 找要删除的节点的上一个节点
      * 
-     * 其实真正要找到时倒数第9个, 也就是倒数第8个节点的前一个节点，
-     * 因为要从前一个节点连接到8的下个节点
-     * 
-     * 题目要求用一次遍历做到。
-     * 
-     * 这题还有点不太好写。
-     * 
-     * 
-     * 双指针
-     * 
-     * cur从头节点开始，走n + 1步
-     * 然后pre从头开始，和cur一起走
-     * 
-     * 当cur为null的时候，将pre.next指向pre.next.next
+     * tips: 由于可能会删除链表头部，用哨兵节点简化代码
+     * 1.cur 先走n步。然后pre指向head，一起往下走
+     * 2.当cur.next等于null的时候，pre指向的就是要删除的节点的上一个节点
      */
     
     public class ListNode {
@@ -37,37 +23,28 @@ public class Problem_0019_RemoveNthNodeFromEndofList {
          ListNode(int val, ListNode next) { this.val = val; this.next = next; }
     }
     
+
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode cur = head;
-        ListNode pre = null;
-        
-        while(cur != null) {
-            n--;
-            // cur走到了要删除节点的前一个位置，将pre指向head
-            // 后面pre和cur一起往后走
-            if(n == -1) {
-                pre = head;
-            }
-            // pre和cur指针一起往后走，当cur走向空的时候，pre就指向了要删除的节点的前一个节点
-            if(n < -1) {
-                pre = pre.next;
-            }
-            cur = cur.next;
-        }
-        // 如果n > 0, 说明链表的长度小于n。 比如链表长度是2，要删除倒数第3个节点，显然没有
-        // 这种情况直接返回头节点就行
-        if(n > 0) {
+        if (head == null || n <= 0) {
             return head;
         }
-        // 如果n == 0, 说明要删除的是头节点
-        // 例如 3个节点，要删除倒数第三个节点，当cur等于null的时候，n = 0
-        // 经过上面的while循环之后，pre是null
-        if(n == 0) {
-            return head.next; 
+        // 由于可能会删除链表头部，用哨兵节点简化代码
+        ListNode dummy = new ListNode(0, head);
+        ListNode cur = dummy;
+        ListNode pre = dummy;
+        // cur 先走n步
+        while (n-- != 0) {
+            cur = cur.next;
         }
-        // 删除要删除的节点
+        // pre指向head，一起往下走
+        while (cur.next != null) {
+            pre = pre.next;
+            cur = cur.next;
+        }
+        // pre指向了要删除节点的上一个节点
         pre.next = pre.next.next;
-        
-        return head;
+        return dummy.next;
     }
+    
+
 }

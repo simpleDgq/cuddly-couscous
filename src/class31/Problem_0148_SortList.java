@@ -61,10 +61,10 @@ public class Problem_0148_SortList {
         if (node == null || node.next == null) {
             return node;
         }
-        ListNode fast = node.next;
+        ListNode fast = node;
         ListNode slow = node;
         // 快指针一次走两步，慢指针一次走一步，快指针为null的时候，slow指向的节点就是中点
-        while (fast != null && fast.next != null) {
+        while (fast.next != null && fast.next.next != null) {
             fast = fast.next.next;
             slow = slow.next;
         }

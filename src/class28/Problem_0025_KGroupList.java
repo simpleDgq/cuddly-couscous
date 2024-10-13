@@ -1,6 +1,7 @@
-package class38;
+package class28;
 
-public class KGroupList {
+// 25. K 个一组翻转链表
+public class Problem_0025_KGroupList {
 
     public static class ListNode {
         int val;
@@ -18,7 +19,13 @@ public class KGroupList {
             this.next = next;
         }
     }
-
+    
+    /**
+     * 思路：
+     * 1.有个函数getKGroupEnd(ListNode start, int k)，从start开始，数够k个元素，返回每一个小组的最后一个元素end，不够k个就返回null
+     * 2.有个reverse(ListNode start, ListNode end)，start到end范围上开始反转链表，翻转完成之后，
+     * start.next会指向下一组要翻转的链表的第一个元素
+     */
     public static ListNode reverseKGroup(ListNode head, int k) {
         ListNode start = head;
         ListNode end = getKGroupEnd(start, k);

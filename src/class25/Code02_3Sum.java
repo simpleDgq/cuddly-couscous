@@ -82,7 +82,8 @@ public class Code02_3Sum {
             } else if (sum > target) {
                 R--;
             } else {
-                // 相等，收集答案. 当前数不等于前一个数
+                // L==0是为了L-1不越界  
+                //相等，收集答案. 当前数不等于前一个数 
                 if (L == 0 || nums[L] != nums[L - 1]) {
                     List<Integer> cur = new ArrayList<Integer>();
                     cur.add(nums[L]);

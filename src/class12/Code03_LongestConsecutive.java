@@ -26,7 +26,13 @@ public class Code03_LongestConsecutive {
 
     /**
      * leetcode思路
-     * 简单来说就是每个数都判断一次这个数是不是连续序列的开头那个数。
+     * 看每一个元素是否能作为开头的数，如果能，能推多远?
+     * 
+     * 如果num-1不包含在数组里面，num就是开头。
+     * 然后一个while循环去判断num开头的序列有多长，更新longestStreak。
+     * 最后返回longestStreak即可。
+     * 
+     * 连续数字，不能有重复数，所以去重。
      * 
      * 怎么判断呢，就是用哈希表查找这个数前面一个数是否存在，即num-1在序列中是否存在。存在那这个数肯定不是开头，直接跳过。
      * 因此只需要对每个开头的数进行循环，直到这个序列不再连续，因此复杂度是O(n)。 以题解中的序列举例:
@@ -40,13 +46,7 @@ public class Code03_LongestConsecutive {
      * 元素1是开头，因为没有0，且以1开头的序列长度为4，因为依次累加，2，3，4都存在。
      * 元素3不是开头，因为2存在，过，
      * 元素2不是开头，因为1存在，过。
-     * 完
      * 
-     * 简单说就是，如果num-1不包含在数组里面，num就是开头。
-     * 然后一个while循环去判断num开头的序列有多长，更新longestStreak。
-     * 最后返回longestStreak即可。
-     * 
-     * 连续数字，不能有重复数，所以去重。
      */
     public int longestConsecutive(int[] nums) {
         if (nums == null || nums.length == 0) {
@@ -56,7 +56,7 @@ public class Code03_LongestConsecutive {
         for (int num : nums) {
             set.add(num); // 加入set进行去重，连续序列中不能出现重复元素
         }
-        int longestStreak = 0;
+        int ans = 0;
 
         // 看每一个元素是否能作为开头的数，如果能，能推多远
         for (int num : set) {
@@ -68,9 +68,9 @@ public class Code03_LongestConsecutive {
                     curLongest++;
                     num++;
                 }
-                longestStreak = Math.max(longestStreak, curLongest);
+                ans = Math.max(ans, curLongest);
             }
         }
-        return longestStreak;
+        return ans;
     }
 }
