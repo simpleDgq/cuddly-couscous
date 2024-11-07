@@ -17,65 +17,65 @@ public class Problem_0289_GameOfLife {
      */
     
     /**
-     * 思路:
+     * 思路：
+     * 1.简单做法，搞一个辅助矩阵，遍历原始矩阵的每一个位置，计算每一个位置的状态填到辅助矩阵里面，最后返回。 --> 空间复杂度高
+     * 2.可以发现，矩阵中的数是int类型，要么是0，要么是1
+     * 可以用每个位置的int数的倒数第一位记录原始的状态
+     * 用倒数第二位记录下一轮的状态。0表示死，1表示活。
      * 
-     * 1.简单做法: 搞一个辅助矩阵，计算每一个格子下一轮状态，然后记录到辅助数组中返回 --> 空间复杂度高
+     * 每一个位置下一轮的状态都计算好，记录到倒数第二位上。
+     * 最后每一个位置只需要往右移动一位就得到了下一轮的状态。
      * 
-     * 2.上面的解法空间复杂度高
-     * 原始格子的值是int，有32位，其实可以用原始格子数的倒数第2位来代表下一轮的状态，
-     * 老的状态用最后一位表示
-     * 
-     * 逻辑:
-     * 遍历每一个格子，分别计算邻居数
-     * 如果邻居数是3，或者当前格子是存活状态（是1）且当前格子的邻居数是2，那么下一轮，这个格子都会存活，
-     * 将当前格子数的第2位，变成1，记录下一轮的状态
-     * 所有的格子的值往右移动一位，就是下一轮的初始状态
-     * 
+     * 节约了空间
      */
     public void gameOfLife(int[][] board) {
-        int M = board.length;
-        int N = board[0].length;
-        for(int i = 0; i <= M - 1; i++) {
-            for(int j = 0; j <= N - 1; j++) {
+        if(board == null || board.length == 0 || board[0] == null || board[0].length == 0) {
+            return;
+        }
+        int N = board.length;
+        int M = board[0].length;
+
+        // 遍历矩阵的每一个位置，计算好下一轮的状态，存储在每一个int数的倒数第二位
+        for(int i = 0; i <= N - 1; i++) {
+            for(int j = 0; j <= M - 1; j++) {
+                // 计算每个节点周围存活的细胞数有多少个
                 int neighbors = neighbors(i, j, board);
-                // 如果邻居数是3，或者当前格子是存活状态（是1）且当前格子的邻居数是2，那么下一轮，这个格子都会存活，
-                // 将当前格子数的第2位，变成1，记录下一轮的状态
+                // 如果周围有3个活细胞(条件2,4)，那么下一轮这个位置还是存活的；
+                // 如果该位置是存活的，然后该位置周围有2个活细胞，那么下一轮这个位置还是存活的
                 if(neighbors == 3 || (board[i][j] == 1 && neighbors == 2)) {
-                    board[i][j] |= 2; // 或上2，就将第二位变成了1
+                    board[i][j] |= 2; // // 或上2，就将第二位变成了1表示下一轮存活, 注意这里，最后一位还是不变的，原始的状态还在，不会影响后面的判断
                 }
             }
         }
-        // 所有的格子的值往右移动一位，就是下一轮的初始状态
-        for(int i = 0; i <= M - 1; i++) {
-            for(int j = 0; j <= N - 1; j++) {
-                board[i][j] >>= 1;
+
+        // 全体向右移动一位，就是下一轮的状态
+         for(int i = 0; i <= N - 1; i++) {
+            for(int j = 0; j <= M - 1; j++) {
+               board[i][j] >>= 1;
             }
         }
     }
-    
-    /**
-     * 获取i,j位置的邻居有多少个1
-     */
-    public int neighbors(int i, int j, int[][] b) {
-        // 8个方向统计
-        return f(b, i - 1, j - 1)
-                + f(b, i - 1, j)
-                + f(b, i - 1, j + 1)
-                + f(b, i, j - 1)
-                + f(b, i, j + 1)
-                + f(b, i + 1, j - 1)
-                + f(b, i + 1, j)
-                + f(b, i + 1, j + 1);
+    // 计算i,j 位置周围有多少个存活的细胞
+    public int neighbors(int i, int j, int board[][]) {
+        // 8个方向都去求一遍
+        return isLive(i - 1, j, board) +
+               isLive(i + 1, j, board) +
+               isLive(i, j - 1, board) +
+               isLive(i, j + 1, board) +
+               isLive(i - 1, j - 1, board) +
+               isLive(i - 1, j + 1, board) +
+               isLive(i + 1, j - 1, board) +
+               isLive(i + 1, j + 1, board);
     }
-    
-    /**
-     * board[i][j]是1就返回1，是0就返回0
-     * 
-     * 判断的时候需要用最后一位判断原始的状态
-     */
-    public int f(int[][] board, int i, int j) {
-        // 不越界且最后一位是1就返回1，否则返回0
-        return (i >=0 && i <= board.length - 1 && j >= 0 && j <= board[0].length - 1 && (board[i][j] & 1) == 1) ? 1 : 0;
+
+    // 判断i,j位置的细胞是否存活
+    // 存活就返回1，不存活返回0
+    public int isLive(int i, int j, int[][] board) {
+        if(i < 0 || i >= board.length || j < 0 || j >= board[0].length) { // 越界了
+            return 0;
+        }
+        // 没有越界，看原始的状态是不是1，是1的话，说明活细胞
+        return (board[i][j] & 1) == 1 ? 1 : 0;
     }
     
 }
