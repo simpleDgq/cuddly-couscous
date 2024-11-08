@@ -58,4 +58,34 @@ public class Problem_0056_MergeIntervals {
         // copyOf 是复制size长度的数字，size是从0开始，所以上面size还是要++
         return Arrays.copyOf(intervals, size);
     }
+    
+    /**
+     * 省掉start和end的写法，更加的简单
+     */
+    public int[][] merge2(int[][] intervals) {
+        // 判断输入是否合法
+        if (intervals == null || intervals.length == 0 || intervals[0] == null || intervals[0].length == 0) {
+            return null;
+        }
+
+        // 按照区间的起始端点升序排序
+        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+
+        int size = 0; // 用于记录合并后的区间数
+        int N = intervals.length;
+
+        for (int i = 1; i < N; i++) { // 从第二个区间开始遍历
+            // 如果当前区间不重叠，直接保存当前区间
+            if (intervals[i][0] > intervals[size][1]) {
+                size++;
+                intervals[size] = intervals[i]; // 将当前区间保存到原数组
+            } else {
+                // 如果当前区间重叠，更新当前区间的end
+                intervals[size][1] = Math.max(intervals[size][1], intervals[i][1]);
+            }
+        }
+
+        // 返回合并后的区间
+        return Arrays.copyOf(intervals, size + 1);
+    }
 }
