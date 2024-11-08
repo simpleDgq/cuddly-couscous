@@ -22,42 +22,43 @@ public class Problem_0150_EvaluateReversePolishNotation {
      */
     
     /**
-     * 思路:
-     * 搞一个栈，是数字就入栈，是符号就弹出栈顶的两个元素，
-     * 进行计算，然后将计算的结果压入栈中
-     * 最后栈中剩下的元素就是答案
+     * 思路：
+     * 搞一个栈，如果是数字的话，就入栈
+     * 如果是运算符，就弹出栈顶的两个元素进行计算，并且将计算的结果压入栈中
+     * 最终栈中剩下的那个元素就是答案
      */
     public int evalRPN(String[] tokens) {
+        if (tokens == null || tokens.length == 0) {
+            return Integer.MAX_VALUE;
+        }
         Stack<Integer> stack = new Stack<Integer>();
-        for(String str : tokens) {
-             // 如果是加减乘除，弹出两个元素，计算答案，放入栈
-             if (str.equals("+") || str.equals("-") || str.equals("*") || str.equals("/")) {
-                    compute(stack, str);   
+        for (String str : tokens) {
+            if (str.equals("+") || str.equals("-") || str.equals("*") || str.equals("/")) {
+                compute(stack, str); // 是运算符就弹出栈顶的两个元素进行计算
             } else {
-                // 是数字，直接入栈
-                stack.push(Integer.valueOf(str));
+                stack.push(Integer.valueOf(str));// 不是运算符就压入栈中
             }
         }
         return stack.peek();
     }
-    // 弹出栈顶元素，计算答案
-    public static void compute(Stack<Integer> stack, String op) {
+
+    public void compute(Stack<Integer> stack, String op) {
         int num2 = stack.pop();
         int num1 = stack.pop();
         int ans = 0;
-        switch (op) {
-        case "+":
-            ans = num1 + num2;
-            break;
-        case "-":
-            ans = num1 - num2;
-            break;
-        case "*":
-            ans = num1 * num2;
-            break;
-        case "/":
-            ans = num1 / num2;
-            break;
+        switch(op) {
+            case "+":
+                ans = num1 + num2;
+                break;
+            case "-":
+                ans = num1 - num2;
+                break;
+            case "*":
+                ans = num1 * num2;
+                break;
+            case "/":
+                ans = num1 / num2;
+                break;
         }
         stack.push(ans);
     }
