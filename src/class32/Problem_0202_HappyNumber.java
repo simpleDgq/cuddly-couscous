@@ -15,24 +15,27 @@ public class Problem_0202_HappyNumber {
      */
     
     /**
-     * 思路:
-     * 1. 搞一个set，每次计算的结果都放入到set中
-     * 2. 如果计算的结果在set中存在，说明循环了，永远计算不完，一定不是快乐数
+     * 将n的每一位的平方都累加到sum里面
+     * 搞一个set记录出现过的sum，
+     * 如果出现重复的sum，说明搞不定，直接返回
      */
     public boolean isHappy(int n) {
-        HashSet<Integer> set = new HashSet<>();
-        while(n != 1) {
+        HashSet<Integer> set = new HashSet<Integer>();
+        // 如果n变成1，说明是快乐数
+        while (n != 1) {
             int sum = 0;
-            // 将n的每一位，平方之后，累加，加入到set中
-            while(n != 0) {
+            // 将n的每一位的平方都累加到sum里面
+            while (n != 0) {
                 sum += (n % 10) * (n % 10);
                 n /= 10;
             }
-            if(set.contains(sum)) {
+            // 如果出现过重复的sum，说明不是快乐数
+            if (set.contains(sum)) {
                 return false;
             }
+            // 没有出现过，添加。重置sum
             set.add(sum);
-            n = sum;
+            n = sum; 
         }
         return true;
     }
